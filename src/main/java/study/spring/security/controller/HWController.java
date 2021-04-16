@@ -16,4 +16,9 @@ public class HWController {
     public String getHello() {
         return hwRepository.getHello();
     }
+
+    @GetMapping("/insecure")
+    public String getInsecureMessage() {
+        return "Insecure end-point!";
+    }
 }
