@@ -1,6 +1,7 @@
 package study.spring.security.security;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,13 +22,21 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/HW/insecure")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .formLogin();
+        http.httpBasic();
+
+        http.authorizeRequests()
+//            .antMatchers("/HW/insecure")
+//                .permitAll()
+//                .anyRequest()
+//                .hasAnyAuthority(Authority.WRITE.name(), Authority.READ.name())
+//                .hasRole(Role.ADMIN.name())
+//                antMatchers
+//                mvcMatchers
+//                regexMatchers
+                .mvcMatchers(HttpMethod.GET, "/HW/hello").hasRole(Role.MANAGER.name())
+                .mvcMatchers(HttpMethod.POST, "/HW/hello").permitAll()
+                .and().formLogin();
+
+        http.csrf().disable();
     }
 }

@@ -1,9 +1,8 @@
 package study.spring.security.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import study.spring.security.dto.SimpleDTO;
 import study.spring.security.repository.HWRepository;
 
 @RestController
@@ -20,5 +19,15 @@ public class HWController {
     @GetMapping("/insecure")
     public String getInsecureMessage() {
         return "Insecure end-point!";
+    }
+
+    @GetMapping("/write/{text}")
+    public String write(@PathVariable String text) {
+        return "You wrote: " + text;
+    }
+
+    @PostMapping("/hello")
+    public String getSimpleDto(@RequestBody SimpleDTO simpleDTO) {
+        return simpleDTO.getName() + " is name and " + simpleDTO.getAge() + " is age";
     }
 }

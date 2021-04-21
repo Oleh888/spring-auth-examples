@@ -1,4 +1,5 @@
 package study.spring.security.security;
 
-public enum Role {
+public enum Authority {
+    READ, WRITE, DELETE, UPDATE
 }
