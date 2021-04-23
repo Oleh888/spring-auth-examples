@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.csrf.CsrfFilter;
 
 @Configuration
 public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
@@ -22,9 +23,10 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic();
-
-        http.authorizeRequests()
+        http
+                .addFilterAfter(new CsrfTokenLogger(), CsrfFilter.class)
+                .authorizeRequests()
+                .anyRequest().permitAll();
 //            .antMatchers("/HW/insecure")
 //                .permitAll()
 //                .anyRequest()
@@ -33,10 +35,9 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
 //                antMatchers
 //                mvcMatchers
 //                regexMatchers
-                .mvcMatchers(HttpMethod.GET, "/HW/hello").hasRole(Role.MANAGER.name())
-                .mvcMatchers(HttpMethod.POST, "/HW/hello").permitAll()
-                .and().formLogin();
+//                .mvcMatchers(HttpMethod.GET, "/HW/hello").hasRole(Role.MANAGER.name())
+//                .mvcMatchers(HttpMethod.POST, "/HW/hello").permitAll()
+//                .and().formLogin();
 
-        http.csrf().disable();
     }
 }
